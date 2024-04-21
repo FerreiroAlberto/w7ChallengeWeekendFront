@@ -3,12 +3,13 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { routerProviders } from './app/app.routes';
+import { AppRoutingModule } from './app/app.routes';
+import { importProvidersFrom } from '@angular/core';
 
 if (environment.production) {
   enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [...routerProviders, HttpClientModule],
+  providers: [importProvidersFrom(HttpClientModule, AppRoutingModule)],
 }).catch((err) => console.error(err));
