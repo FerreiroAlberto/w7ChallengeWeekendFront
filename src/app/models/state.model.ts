@@ -10,6 +10,6 @@ export type Payload = {
 export type State = {
   loginState: LoginState;
   token: string | null;
-  currenPayload: Payload | null;
+  currentPayload: Payload | null;
   currenUser: unknown | null;
 };

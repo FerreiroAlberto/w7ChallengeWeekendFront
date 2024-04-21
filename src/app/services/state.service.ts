@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 const initialState: State = {
   loginState: 'idle',
   token: null,
-  currenPayload: null,
+  currentPayload: null,
   currenUser: null,
 };
 
@@ -16,6 +16,7 @@ const initialState: State = {
 })
 export class StateService {
   private state$ = new BehaviorSubject<State>(initialState);
+  private userId: string = '';
 
   constructor(private repoUsers: RepoUsers) {}
   getState(): Observable<State> {
@@ -27,14 +28,15 @@ export class StateService {
   }
 
   setLogin(token: string) {
-    const currenPayload = jwtDecode(token) as Payload;
-    localStorage.setItem('week7.ng', JSON.stringify({ token }));
-    this.repoUsers.getById(currenPayload.id).subscribe((user) => {
+    const currentPayload = jwtDecode(token) as Payload;
+    this.setCurrentUserId(currentPayload.id);
+    localStorage.setItem('weekend7Challenge', JSON.stringify({ token }));
+    this.repoUsers.getById(currentPayload.id).subscribe((user) => {
       this.state$.next({
         ...this.state$.value,
         loginState: 'logged',
         token,
-        currenPayload,
+        currentPayload,
         currenUser: user,
       });
     });
@@ -46,7 +48,14 @@ export class StateService {
       ...this.state$.value,
       loginState: 'idle',
       token: null,
-      currenPayload: null,
+      currentPayload: null,
     });
+  }
+  getCurrentUserId(): string {
+    return this.userId;
+  }
+
+  setCurrentUserId(userId: string): void {
+    this.userId = userId;
   }
 }

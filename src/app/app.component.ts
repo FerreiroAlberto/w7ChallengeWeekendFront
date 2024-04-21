@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LoginComponent } from './components/login/login.component';
 
 @Component({
   selector: 'isdi-root',
   standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  imports: [RouterOutlet, LoginComponent],
 })
 export class AppComponent {
   title = 'Front';

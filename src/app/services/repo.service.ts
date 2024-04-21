@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { UserLoginDto } from '../models/user.model';
+import { UserLoginDto, UserRegisterDto } from '../models/user.model';
 import { environment } from '../../environments/environment.development';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,18 @@ import { environment } from '../../environments/environment.development';
 export class RepoUsers {
   httpClient = inject(HttpClient);
   url = environment.apiUrl + '/users';
+
+  getAllUsers(): Observable<unknown[]> {
+    return this.httpClient.get<unknown[]>(this.url);
+  }
+
+  getFriends(userId: string): Observable<unknown[]> {
+    return this.httpClient.get<unknown[]>(`${this.url}/${userId}/friends`);
+  }
+
+  getEnemies(userId: string): Observable<unknown[]> {
+    return this.httpClient.get<unknown[]>(`${this.url}/${userId}/enemies`);
+  }
 
   login(_data: UserLoginDto) {
     const data = {
@@ -20,5 +33,13 @@ export class RepoUsers {
 
   getById(id: string) {
     return this.httpClient.get(this.url + '/' + id);
+  }
+  register(_data: UserRegisterDto) {
+    const data = {
+      name: _data.name,
+      email: _data.email,
+      password: _data.password,
+    };
+    return this.httpClient.post(this.url + '/register', data);
   }
 }
